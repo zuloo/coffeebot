@@ -1,11 +1,12 @@
 #!/usr/bin/python2.7
 import socket
+import random
 from collections import Counter
 # Some basic variables used to configure the bot
 server = "irc.freenode.net" # Server
 port = 6667
 channel = "#zuloo" # Channel
-botnick = "coffeebot" # Your bots nick
+botnick = "coffeebot9000" # Your bots nick
 
 order = {};
 
@@ -41,17 +42,40 @@ def commands(message):
     for v in order.values():
       empty = False
       drinks[v]+=1
-    sendmsg(channel,"{nick}: the order:".format(nick=nick))
+    sendmsg(channel,"{nick}: The order:".format(nick=nick))
     if empty:
-        sendmsg(channel,"  no drinks ordered")
+        sendmsg(channel,"  No drinks ordered!")
     for k in drinks:
       sendmsg(channel,"  {value} {key}".format(key=k, value=str(drinks[k]).rjust(3)))
+  elif ircmsg.find('!whoshouldpay')!=-1:
+      paylist = ['Kristian', 'Armin', 'Ed', 'Jan', 'Thomas', 'Bernd', 'Christian',
+                 'Nobody is allowed coffee today. Sorry. Back to work!']
+      sendmsg(channel,random.choice(paylist))
+  elif ircmsg.find('!suggest')!=-1:
+      drinklist = ['LATTE MACCIATTOOO!', 'Espresso', 'Double Espresso', 'Café',
+                   'Cappucino', 'Hot Chocolate day!',
+                   'LLAAAATTEE MAAAAACCCCCCIIIIIAAAATTTTOOOOOO!!!1!!!1!!one!!1',
+                   'I think you should go thirsty today.', 'Quadruple Espresso']
+      sendmsg(channel,random.choice(drinklist))
+  elif ircmsg.find('!xig')!=-1:
+      xiglist = ['b', 'd', 'f', 'g', 'j', 'l', 'm', 'n',
+        'r', 's', 't', 'w', 'z', 'br', 'bl', 'p',
+        'dr', 'fl', 'fr', 'gl', 'gr', 'pl', 'pr',
+        'sn', 'sp', 'st', 'sw', 'tr', 'tw', 'wr',
+        'ch', 'cl', 'kl', 'kr', 'schw', 'sch',
+        'schl', 'y']
+      c1 = random.choice(xiglist)
+      c2 = random.choice(xiglist)
+      while c2 == c1:
+          c2 = random.choice(xiglist)
+      sendmsg(channel, c1.title()+'iggly'+c2+'uff?')
   elif ircmsg.find(botnick+":")!=-1 or ircmsg.find("!help")!=-1:
     sendmsg(channel, "!order drink - order the drink")
     sendmsg(channel, "!bill - show the summed orders")
     sendmsg(channel, "!reset - reset the orders")
-
-
+    sendmsg(channel, "!whoshouldpay - decides who should pay")
+    sendmsg(channel, "!suggest - tells indecisive people what to drink")
+    sendmsg(channel, "!xig - generates a random Xigglyxuff! :D")
 # Here we connect to the server using the port 6667
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ircsock.connect((server, port))
