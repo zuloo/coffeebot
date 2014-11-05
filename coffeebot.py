@@ -1,6 +1,7 @@
 #!/usr/bin/python2.7
 import socket
 import random
+
 from collections import Counter
 # Some basic variables used to configure the bot
 server = "irc.freenode.net" # Server
